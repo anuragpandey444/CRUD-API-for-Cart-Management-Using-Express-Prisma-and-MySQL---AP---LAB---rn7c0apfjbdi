@@ -5,6 +5,8 @@ RESTful API for managing shopping cart using Express.js, Prisma, and MySQL.
 ## Setup Instructions
 
 1. **Configure Database**:
+   - Make sure MySQL is running on your system
+   - Create a database named `cart_db`
    - Update the `DATABASE_URL` in `.env` file with your MySQL credentials
    - Example: `DATABASE_URL="mysql://root:yourpassword@localhost:3306/cart_db"`
 
@@ -13,15 +15,28 @@ RESTful API for managing shopping cart using Express.js, Prisma, and MySQL.
    npm install
    ```
 
-3. **Run Database Migration**:
+3. **Test Database Connection**:
+   ```bash
+   npm run setup
+   ```
+
+4. **Run Database Migration**:
    ```bash
    npx prisma migrate dev --name init
    ```
 
-4. **Start the Server**:
+5. **Start the Server**:
    ```bash
    npm start
    ```
+
+## Troubleshooting
+
+If you get "Internal Server Error":
+1. Check if MySQL is running
+2. Verify database credentials in `.env`
+3. Run `npm run setup` to test connection
+4. Check server logs for specific error messages
 
 ## API Endpoints
 

@@ -5,6 +5,11 @@ const authMiddleware = require('../middleware/auth');
 const router = express.Router();
 const prisma = new PrismaClient();
 
+// Test database connection
+prisma.$connect().catch(err => {
+  console.error('Database connection failed:', err.message);
+});
+
 // Apply auth middleware to all routes
 router.use(authMiddleware);
 
@@ -18,10 +23,11 @@ router.post('/addProduct', async (req, res) => {
   
   try {
     const cart = await prisma.cart.create({
-      data: { userId, productId, count }
+      data: { userId: parseInt(userId), productId: parseInt(productId), count: parseInt(count) }
     });
     res.status(201).json(cart);
   } catch (error) {
+    console.error('Create cart error:', error.message);
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -41,6 +47,7 @@ router.get('/getById/:id', async (req, res) => {
     
     res.status(200).json(cart);
   } catch (error) {
+    console.error('Get cart error:', error.message);
     res.status(404).json({ error: "Cart not found" });
   }
 });
@@ -57,6 +64,7 @@ router.patch('/patch/:id', async (req, res) => {
     });
     res.status(200).json(cart);
   } catch (error) {
+    console.error('Update cart error:', error.message);
     res.status(404).json({ error: "Cart not found" });
   }
 });
@@ -71,6 +79,7 @@ router.delete('/removeProduct/:id', async (req, res) => {
     });
     res.status(200).json({ message: "Cart deleted successfully" });
   } catch (error) {
+    console.error('Delete cart error:', error.message);
     res.status(404).json({ error: "Cart not found" });
   }
 });
